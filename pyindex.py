@@ -35,8 +35,15 @@ class TotalOrder:
         self.current_inds = [0]*dimension
         self.start = True
         self.max_sum = order
-        self.count = scipy.special.binom(dimension + order, dimension)
+        self.count = int(scipy.special.binom(dimension + order, dimension))
+        self.max_indices = [order] * dimension
 
+    def get_count(self):
+        return self.count
+    
+    def get_max_indices(self):
+        return self.max_indices
+    
     def _print_current_state(self):
         """ Diagnostics Functions """
         print("\n ")
@@ -67,8 +74,11 @@ class TotalOrder:
                 return self.current_inds
             else:
                 return self._reset()
-
         else: #self.on_dim == -1
+            self.on_dim = self.d_minus_1
+            self.current_sum = 0
+            self.current_inds = [0]*(self.d_minus_1+1)
+            self.start = True
             return None
             
     def _reset(self):
@@ -78,7 +88,8 @@ class TotalOrder:
         return self._basefunc()
         
     def __next__(self):
-        if self.start:
+        # self._print_current_state()
+        if self.start is True:
             self.start = False
             return self.current_inds
         else:
@@ -101,7 +112,12 @@ def totalorder2():
 def totalorder3():
     for c in TotalOrder(3, 5):
     # for c in TotalOrder(20, 3):
-        print(c)                
+        print(c)
+
+def totalorder4():
+    d = list(TotalOrder(3, 5))
+    for c in d:
+        print(c)
 
 if __name__ == "__main__":
 
